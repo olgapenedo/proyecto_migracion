@@ -1,0 +1,4 @@
+channel_code,channel_name,is_digital
+web,Tienda online,true
+store,Tienda física,false
+app,Aplicación móvil,true
