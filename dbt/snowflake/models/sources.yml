@@ -1,0 +1,11 @@
+version: 2
+sources:
+- name: raw
+  schema: RAW
+  tables:
+  - name: customers
+    identifier: CUSTOMERS
+  - name: orders
+    identifier: ORDERS
+  - name: channel_catalog
+    identifier: CHANNEL_CATALOG
