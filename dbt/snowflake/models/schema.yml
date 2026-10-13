@@ -1,0 +1,91 @@
+version: 2
+models:
+- name: v_customers
+  description: Migrado desde repo_fuente/snowflake/03_funciones_vistas.sql#view_1.sql.
+    Declarative, non-procedural view; logic is a single SQL transformation suitable
+    for a dbt model.; parsed declarative query; pure SQL functions inlined and incremental
+    MERGE contract extracted where applicable
+  columns:
+  - name: CUSTOMER_ID
+    description: 'Columna derivada del SQL original: CUSTOMER_ID'
+    data_tests:
+    - unique
+  - name: EMAIL
+    description: 'Columna derivada del SQL original: EMAIL'
+  - name: UPDATED_AT
+    description: 'Columna derivada del SQL original: UPDATED_AT'
+- name: v_orders
+  description: Migrado desde repo_fuente/snowflake/03_funciones_vistas.sql#view_2.sql.
+    Declarative, non-procedural view; UDF is pure SQL and can be inlined; suitable
+    for a dbt model.; parsed declarative query; pure SQL functions inlined and incremental
+    MERGE contract extracted where applicable
+  columns:
+  - name: ORDER_ID
+    description: 'Columna derivada del SQL original: ORDER_ID'
+  - name: CUSTOMER_ID
+    description: 'Columna derivada del SQL original: CUSTOMER_ID'
+  - name: ORDER_DATE
+    description: 'Columna derivada del SQL original: ORDER_DATE'
+  - name: NET_AMOUNT
+    description: 'Columna derivada del SQL original: NET_AMOUNT'
+  - name: CHANNEL
+    description: 'Columna derivada del SQL original: CHANNEL'
+  - name: EMAIL
+    description: 'Columna derivada del SQL original: EMAIL'
+  - name: UPDATED_AT
+    description: 'Columna derivada del SQL original: UPDATED_AT'
+- name: v_orders_by_channel
+  description: Migrado desde repo_fuente/snowflake/05_catalogo_canales.sql#view_1.sql.
+    This is a declarative, non-procedural view that performs a left join between an
+    existing model and a reference table. It is parseable, has no destructive or admin
+    side effects, and is suitable for migration as a dbt model. The dependency on
+    RAW.CHANNEL_CATALOG can be mapped to a dbt seed if available.; parsed declarative
+    query; pure SQL functions inlined and incremental MERGE contract extracted where
+    applicable
+  columns:
+  - name: CHANNEL_NAME
+    description: 'Columna derivada del SQL original: CHANNEL_NAME'
+  - name: IS_DIGITAL
+    description: 'Columna derivada del SQL original: IS_DIGITAL'
+- name: fct_orders
+  description: Migrado desde repo_fuente/snowflake/06_carga_incremental.sql#incremental_1.sql.
+    This is a single, declarative, non-procedural incremental transformation suitable
+    for dbt. It is parseable, specifies a unique key and watermark, and has no destructive
+    or admin side effects. The referenced UDF (ANALYTICS.NET_AMOUNT) is inlined in
+    the dbt_query, making it portable.; parsed declarative query; pure SQL functions
+    inlined and incremental MERGE contract extracted where applicable
+  columns:
+  - name: ORDER_ID
+    description: 'Columna derivada del SQL original: ORDER_ID'
+    data_tests:
+    - not_null
+    - unique
+  - name: CUSTOMER_ID
+    description: 'Columna derivada del SQL original: CUSTOMER_ID'
+  - name: ORDER_DATE
+    description: 'Columna derivada del SQL original: ORDER_DATE'
+  - name: NET_AMOUNT
+    description: 'Columna derivada del SQL original: NET_AMOUNT'
+  - name: STATUS
+    description: 'Columna derivada del SQL original: STATUS'
+  - name: CHANNEL
+    description: 'Columna derivada del SQL original: CHANNEL'
+  - name: UPDATED_AT
+    description: 'Columna derivada del SQL original: UPDATED_AT'
+seeds:
+- name: channel_catalog
+  description: Migrado desde repo_fuente/datos_referencia/channel_catalog.csv. Small,
+    stable, reference CSV with unique RAW table match; suitable as a dbt seed.
+  columns:
+  - name: channel_code
+    description: 'Campo de catálogo: channel_code'
+    data_tests:
+    - not_null
+    - unique
+  - name: channel_name
+    description: 'Campo de catálogo: channel_name'
+    data_tests:
+    - not_null
+    - unique
+  - name: is_digital
+    description: 'Campo de catálogo: is_digital'
