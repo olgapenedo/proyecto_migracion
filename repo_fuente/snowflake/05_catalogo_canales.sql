@@ -1,0 +1,22 @@
+-- Catálogo pequeño, estable y versionable: candidato a seed dbt.
+-- Los pedidos son datos operacionales; este catálogo sí es dato de referencia.
+CREATE TABLE IF NOT EXISTS RAW.CHANNEL_CATALOG (
+ CHANNEL_CODE VARCHAR, CHANNEL_NAME VARCHAR, IS_DIGITAL BOOLEAN
+);
+MERGE INTO RAW.CHANNEL_CATALOG t
+USING (
+ SELECT column1::VARCHAR AS CHANNEL_CODE, column2::VARCHAR AS CHANNEL_NAME,
+        column3::BOOLEAN AS IS_DIGITAL
+ FROM VALUES ('web', 'Tienda online', TRUE),
+             ('store', 'Tienda física', FALSE),
+             ('app', 'Aplicación móvil', TRUE)
+) s ON t.CHANNEL_CODE = s.CHANNEL_CODE
+WHEN MATCHED THEN UPDATE SET CHANNEL_NAME = s.CHANNEL_NAME, IS_DIGITAL = s.IS_DIGITAL
+WHEN NOT MATCHED THEN INSERT (CHANNEL_CODE, CHANNEL_NAME, IS_DIGITAL)
+ VALUES (s.CHANNEL_CODE, s.CHANNEL_NAME, s.IS_DIGITAL);
+
+-- La dependencia del catálogo debe convertirse en ref al seed en dbt.
+CREATE OR REPLACE VIEW ANALYTICS.V_ORDERS_BY_CHANNEL AS
+SELECT o.*, c.CHANNEL_NAME, c.IS_DIGITAL
+FROM ANALYTICS.V_ORDERS o
+LEFT JOIN RAW.CHANNEL_CATALOG c ON o.CHANNEL = c.CHANNEL_CODE;
