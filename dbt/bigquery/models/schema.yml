@@ -1,0 +1,18 @@
+version: 2
+models:
+- name: v_customers
+  description: Migrado desde repo_fuente/bigquery/03_funciones_vistas.sql#view_1.sql.
+    This is a single declarative view that deduplicates customers and normalizes email.
+    No procedural logic or external dependencies. Can be migrated as a dbt model.;
+    parsed declarative query; pure SQL functions inlined and incremental MERGE contract
+    extracted where applicable
+  columns:
+  - name: customer_id
+    description: 'Columna derivada del SQL original: customer_id'
+    data_tests:
+    - unique
+  - name: email
+    description: 'Columna derivada del SQL original: email'
+  - name: updated_at
+    description: 'Columna derivada del SQL original: updated_at'
+seeds: []

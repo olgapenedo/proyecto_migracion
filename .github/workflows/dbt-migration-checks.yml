@@ -1,0 +1,26 @@
+name: dbt migration checks
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  merge_group:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  migration:
+    name: dbt-migration-required
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install check dependencies
+        run: python -m pip install 'sqlglot>=28,<31' 'Jinja2>=3.1,<4' 'PyYAML>=6,<7'
+      - name: Verify migration contracts
+        run: python .github/scripts/dbt_migration_checks.py .github/dbt-migration-contracts.json
+      - name: Parse every dbt project
+        run: python .github/scripts/dbt_migration_parse.py .github/dbt-migration-contracts.json
