@@ -1,0 +1,18 @@
+version: 2
+models:
+- name: v_customers
+  description: Migrado desde repo_fuente/bigquery/03_funciones_vistas.sql#view_1.sql.
+    This is a single, declarative, non-procedural view suitable for a dbt model. It
+    selects and transforms data from a raw table with no side effects or dynamic SQL.;
+    parsed declarative query; pure SQL functions inlined and incremental MERGE contract
+    extracted where applicable
+  columns:
+  - name: customer_id
+    description: 'Columna derivada del SQL original: customer_id'
+    data_tests:
+    - unique
+  - name: email
+    description: 'Columna derivada del SQL original: email'
+  - name: updated_at
+    description: 'Columna derivada del SQL original: updated_at'
+seeds: []
