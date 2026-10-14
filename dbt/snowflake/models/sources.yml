@@ -1,0 +1,45 @@
+version: 2
+sources:
+- name: raw
+  schema: RAW
+  tables:
+  - name: customers
+    identifier: CUSTOMERS
+    description: 'Tabla de entrada del repositorio original: CUSTOMERS'
+    columns:
+    - name: CUSTOMER_ID
+      description: 'Columna definida en el DDL original: CUSTOMER_ID'
+    - name: EMAIL
+      description: 'Columna definida en el DDL original: EMAIL'
+    - name: UPDATED_AT
+      description: 'Columna definida en el DDL original: UPDATED_AT'
+  - name: orders
+    identifier: ORDERS
+    description: 'Tabla de entrada del repositorio original: ORDERS'
+    columns:
+    - name: ORDER_ID
+      description: 'Columna definida en el DDL original: ORDER_ID'
+    - name: CUSTOMER_ID
+      description: 'Columna definida en el DDL original: CUSTOMER_ID'
+    - name: ORDER_DATE
+      description: 'Columna definida en el DDL original: ORDER_DATE'
+    - name: AMOUNT
+      description: 'Columna definida en el DDL original: AMOUNT'
+    - name: DISCOUNT_PCT
+      description: 'Columna definida en el DDL original: DISCOUNT_PCT'
+    - name: STATUS
+      description: 'Columna definida en el DDL original: STATUS'
+    - name: UPDATED_AT
+      description: 'Columna definida en el DDL original: UPDATED_AT'
+    - name: METADATA
+      description: 'Columna definida en el DDL original: METADATA'
+  - name: channel_catalog
+    identifier: CHANNEL_CATALOG
+    description: 'Tabla de entrada del repositorio original: CHANNEL_CATALOG'
+    columns:
+    - name: CHANNEL_CODE
+      description: 'Columna definida en el DDL original: CHANNEL_CODE'
+    - name: CHANNEL_NAME
+      description: 'Columna definida en el DDL original: CHANNEL_NAME'
+    - name: IS_DIGITAL
+      description: 'Columna definida en el DDL original: IS_DIGITAL'

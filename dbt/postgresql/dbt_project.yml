@@ -1,0 +1,8 @@
+name: migration_postgresql
+version: 1.0.0
+config-version: 2
+profile: migration_postgresql
+model-paths:
+- models
+seed-paths:
+- seeds

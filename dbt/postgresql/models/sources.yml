@@ -1,0 +1,35 @@
+version: 2
+sources:
+- name: raw
+  schema: raw
+  tables:
+  - name: customers
+    identifier: customers
+    description: 'Tabla de entrada del repositorio original: customers'
+    columns:
+    - name: customer_id
+      description: 'Columna definida en el DDL original: customer_id'
+    - name: email
+      description: 'Columna definida en el DDL original: email'
+    - name: updated_at
+      description: 'Columna definida en el DDL original: updated_at'
+  - name: orders
+    identifier: orders
+    description: 'Tabla de entrada del repositorio original: orders'
+    columns:
+    - name: order_id
+      description: 'Columna definida en el DDL original: order_id'
+    - name: customer_id
+      description: 'Columna definida en el DDL original: customer_id'
+    - name: order_date
+      description: 'Columna definida en el DDL original: order_date'
+    - name: amount
+      description: 'Columna definida en el DDL original: amount'
+    - name: discount_pct
+      description: 'Columna definida en el DDL original: discount_pct'
+    - name: status
+      description: 'Columna definida en el DDL original: status'
+    - name: updated_at
+      description: 'Columna definida en el DDL original: updated_at'
+    - name: metadata
+      description: 'Columna definida en el DDL original: metadata'
