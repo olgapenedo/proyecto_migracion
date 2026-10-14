@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "artifacts": [
+    {
+      "source_path": "repo_fuente/bigquery/03_funciones_vistas.sql#view_1.sql",
+      "expected_columns": [
+        "customer_id",
+        "email",
+        "updated_at"
+      ],
+      "expected_dependencies": [
+        "source:raw.customers"
+      ],
+      "rationale": "The view selects customer_id, normalized email, and updated_at from the raw customers table, deduplicating by customer_id using the latest updated_at. The dbt model uses source:raw.customers. No other dependencies or columns are present.",
+      "path": "dbt/bigquery/models/v_customers.sql",
+      "artifact_type": "model",
+      "dialect": "bigquery"
+    },
+    {
+      "source_path": "repo_fuente/postgresql/03_funciones_vistas.sql#view_1.sql",
+      "expected_columns": [
+        "customer_id",
+        "email",
+        "updated_at"
+      ],
+      "expected_dependencies": [
+        "source:raw.customers"
+      ],
+      "rationale": "The view selects customer_id, normalized email, and updated_at from raw.customers, deduplicating by customer_id with the latest updated_at. The dbt model uses source:raw.customers. No other dependencies or columns are present.",
+      "path": "dbt/postgresql/models/v_customers.sql",
+      "artifact_type": "model",
+      "dialect": "postgres"
+    },
+    {
+      "source_path": "repo_fuente/datos_referencia/channel_catalog.csv",
+      "expected_columns": [
+        "channel_code",
+        "channel_name",
+        "is_digital"
+      ],
+      "expected_dependencies": [],
+      "rationale": "This is a seed file. The expected columns are exactly the CSV headers. Seeds have no dbt dependencies.",
+      "path": "dbt/snowflake/seeds/channel_catalog.csv",
+      "artifact_type": "seed",
+      "dialect": "snowflake"
+    },
+    {
+      "source_path": "repo_fuente/snowflake/03_funciones_vistas.sql#view_1.sql",
+      "expected_columns": [
+        "CUSTOMER_ID",
+        "EMAIL",
+        "UPDATED_AT"
+      ],
+      "expected_dependencies": [
+        "source:raw.customers"
+      ],
+      "rationale": "The view selects CUSTOMER_ID, normalized EMAIL, and UPDATED_AT from RAW.CUSTOMERS, deduplicating by CUSTOMER_ID with the latest UPDATED_AT. The dbt model uses source:raw.customers. No other dependencies or columns are present.",
+      "path": "dbt/snowflake/models/v_customers.sql",
+      "artifact_type": "model",
+      "dialect": "snowflake"
+    },
+    {
+      "source_path": "repo_fuente/snowflake/03_funciones_vistas.sql#view_2.sql",
+      "expected_columns": [
+        "ORDER_ID",
+        "CUSTOMER_ID",
+        "ORDER_DATE",
+        "NET_AMOUNT",
+        "CHANNEL",
+        "EMAIL",
+        "UPDATED_AT"
+      ],
+      "expected_dependencies": [
+        "ref:v_customers",
+        "source:raw.orders"
+      ],
+      "rationale": "The view selects order_id, customer_id, order_date, calculated net_amount, channel, email, and updated_at from RAW.ORDERS joined to ANALYTICS.V_CUSTOMERS. The dbt model uses ref:v_customers and source:raw.orders. All columns are explicitly projected.",
+      "path": "dbt/snowflake/models/v_orders.sql",
+      "artifact_type": "model",
+      "dialect": "snowflake"
+    },
+    {
+      "source_path": "repo_fuente/snowflake/05_catalogo_canales.sql#view_1.sql",
+      "expected_columns": [
+        "ORDER_ID",
+        "CUSTOMER_ID",
+        "ORDER_DATE",
+        "NET_AMOUNT",
+        "CHANNEL",
+        "EMAIL",
+        "UPDATED_AT",
+        "CHANNEL_NAME",
+        "IS_DIGITAL"
+      ],
+      "expected_dependencies": [
+        "ref:v_orders",
+        "ref:channel_catalog"
+      ],
+      "rationale": "The view selects all columns from v_orders (ORDER_ID, CUSTOMER_ID, ORDER_DATE, NET_AMOUNT, CHANNEL, EMAIL, UPDATED_AT) and adds CHANNEL_NAME and IS_DIGITAL from channel_catalog. The dbt model uses ref:v_orders and ref:channel_catalog. Wildcard expansion is based on upstream v_orders columns.",
+      "path": "dbt/snowflake/models/v_orders_by_channel.sql",
+      "artifact_type": "model",
+      "dialect": "snowflake"
+    },
+    {
+      "source_path": "repo_fuente/snowflake/06_carga_incremental.sql#incremental_1.sql",
+      "expected_columns": [
+        "ORDER_ID",
+        "CUSTOMER_ID",
+        "ORDER_DATE",
+        "NET_AMOUNT",
+        "STATUS",
+        "CHANNEL",
+        "UPDATED_AT"
+      ],
+      "expected_dependencies": [
+        "source:raw.orders"
+      ],
+      "rationale": "The incremental model selects order_id, customer_id, order_date, calculated net_amount, status, channel, and updated_at from RAW.ORDERS. The dbt model uses source:raw.orders. All columns are explicitly projected; no other dependencies.",
+      "path": "dbt/snowflake/models/fct_orders.sql",
+      "artifact_type": "model",
+      "dialect": "snowflake"
+    },
+    {
+      "source_path": "repo_fuente/sqlserver/03_funciones_vistas.sql#view_1.sql",
+      "expected_columns": [
+        "customer_id",
+        "email",
+        "updated_at"
+      ],
+      "expected_dependencies": [
+        "source:raw.customers"
+      ],
+      "rationale": "The view selects customer_id, normalized email, and updated_at from raw.customers, deduplicating by customer_id with the latest updated_at. The dbt model uses source:raw.customers. No other dependencies or columns are present.",
+      "path": "dbt/sqlserver/models/v_customers.sql",
+      "artifact_type": "model",
+      "dialect": "tsql"
+    }
+  ],
+  "projects": [
+    {
+      "path": "dbt/bigquery",
+      "adapter": "BigQuery"
+    },
+    {
+      "path": "dbt/postgresql",
+      "adapter": "Postgres"
+    },
+    {
+      "path": "dbt/snowflake",
+      "adapter": "Snowflake"
+    },
+    {
+      "path": "dbt/sqlserver",
+      "adapter": "Microsoft SQL Server"
+    }
+  ]
+}
